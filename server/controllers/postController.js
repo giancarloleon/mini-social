@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Post from "../models/Post.js";
+import Follow from "../models/Follow.js";
 
 // @desc    Crear un nuevo post
 // @route   POST /api/posts
@@ -74,5 +75,29 @@ export const getUserPosts = async (req, res) => {
     res.json(posts);
   } catch (error) {
     res.status(500).json({ message: "Error en el servidor", error: error.message });
+  }
+};
+
+// @desc    Obtener el feed personalizado (posts de gente que sigo + míos)
+// @route   GET /api/posts/feed
+export const getFeed = async (req, res) => {
+  try {
+    // 1. Buscamos a todos los usuarios a los que YO sigo
+    const follows = await Follow.find({ follower: req.user._id });
+    
+    // 2. Extraemos solo los IDs de esos usuarios en un array
+    const followingIds = follows.map((follow) => follow.following);
+    
+    // 3. Le agregamos mi propio ID para ver también mis propios posts
+    followingIds.push(req.user._id);
+
+    // 4. Buscamos los posts donde el autor esté en esa lista de IDs
+    const posts = await Post.find({ author: { $in: followingIds } })
+      .sort({ createdAt: -1 }) // Más nuevos primero
+      .populate("author", "username avatarUrl displayName");
+
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener el feed", error: error.message });
   }
 };
