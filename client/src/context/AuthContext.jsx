@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   // Función para loguear
   const login = async (email, password) => {
     // URL de tu backend en Render o local
-    const API_URL = "http://localhost:4000/api"; 
+const API_URL = import.meta.env.VITE_API_URL;
     const res = await axios.post(`${API_URL}/auth/login`, { email, password });
     
     setToken(res.data.token);
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   // Función para registrar
   const register = async (username, email, password) => {
-    const API_URL = "http://localhost:4000/api";
+const API_URL = import.meta.env.VITE_API_URL;
     const res = await axios.post(`${API_URL}/auth/register`, { username, email, password });
     
     setToken(res.data.token);

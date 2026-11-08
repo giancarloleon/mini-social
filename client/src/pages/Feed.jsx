@@ -3,6 +3,8 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import PostCard from "../components/PostCard";
 
+const API_URL = import.meta.env.VITE_API_URL; // <-- Variable global del archivo
+
 const Feed = () => {
   const { user, logout } = useAuth();
   const [posts, setPosts] = useState([]);
@@ -12,8 +14,7 @@ const Feed = () => {
   // 1. Cargar el feed al entrar
   const fetchFeed = async () => {
     try {
-      // Usamos la ruta protegida, Axios ya envía el token automáticamente gracias al AuthContext
-      const res = await axios.get("http://localhost:4000/api/posts/feed");
+      const res = await axios.get(`${API_URL}/posts/feed`);
       setPosts(res.data);
     } catch (error) {
       console.error("Error al cargar el feed", error);
@@ -32,10 +33,9 @@ const Feed = () => {
     if (!newPostText.trim()) return;
 
     try {
-      const res = await axios.post("http://localhost:4000/api/posts", { text: newPostText });
-      // Añadimos el nuevo post al principio de la lista
+      const res = await axios.post(`${API_URL}/posts`, { text: newPostText });
       setPosts([res.data, ...posts]); 
-      setNewPostText(""); // Limpiamos el input
+      setNewPostText(""); 
     } catch (error) {
       console.error("Error al crear post", error);
     }
@@ -43,7 +43,6 @@ const Feed = () => {
 
   // 3. Función para manejar el like desde el hijo
   const handleLikeUpdate = (postId, newCount) => {
-    // Actualizamos el estado local para que el contador cambie visualmente
     setPosts(posts.map(p => p._id === postId ? { ...p, likesCount: newCount } : p));
   };
 
@@ -51,13 +50,11 @@ const Feed = () => {
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-      {/* Barra superior con botón de logout */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <h2>Hola, @{user?.username}</h2>
         <button onClick={logout} style={{ padding: "8px 12px", cursor: "pointer" }}>Cerrar Sesión</button>
       </div>
 
-      {/* Formulario para crear post */}
       <form onSubmit={handleCreatePost} style={{ marginBottom: "30px", display: "flex", gap: "10px" }}>
         <input 
           type="text" 
@@ -71,7 +68,6 @@ const Feed = () => {
         </button>
       </form>
 
-      {/* Lista de posts */}
       <div>
         {posts.length === 0 ? (
           <p>No hay posts aún. ¡Sigue a alguien o publica algo!</p>
