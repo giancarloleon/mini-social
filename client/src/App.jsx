@@ -1,20 +1,33 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Feed from "./pages/Feed";
+import { useAuth } from "./context/AuthContext";
+
+// Componente para proteger rutas privadas
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" />;
+  return children;
+};
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Ruta por defecto: redirige al login */}
         <Route path="/" element={<Navigate to="/login" />} />
-        
-        {/* Rutas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         
-        {/* Ruta temporal para el feed (la crearemos en el siguiente paso) */}
-        <Route path="/feed" element={<h1>Feed en construcción...</h1>} />
+        {/* Ruta protegida: si no hay usuario, redirige al login */}
+        <Route 
+          path="/feed" 
+          element={
+            <ProtectedRoute>
+              <Feed />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </Router>
   );
