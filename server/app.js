@@ -11,7 +11,7 @@ const app = express();
 // Configuración de CORS para permitir Vercel y el entorno local
 const allowedOrigins = [
   "http://localhost:5173", // Tu frontend local
-  "https://mini-social-alpha.vercel.app/login" // Tu frontend en producción (CAMBIA ESTO)
+  "https://mini-social-alpha.vercel.app" // Tu frontend en producción (CAMBIA ESTO)
 ];
 
 app.use(cors({
