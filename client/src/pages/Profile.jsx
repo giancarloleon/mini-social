@@ -15,16 +15,20 @@ const Profile = () => {
   const [isFollowing, setIsFollowing] = useState(false); // Estado para el botón
 
   const fetchProfile = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/users/${username}/posts`);
-      setProfileData(res.data);
-      setIsFollowing(res.data.isFollowing); // <-- Leemos el estado inicial
-    } catch (err) {
-      setError("Usuario no encontrado");
-    } finally {
-      setLoading(false);
+  try {
+    const res = await axios.get(`${API_URL}/users/${username}/posts`);
+    setProfileData(res.data);
+    
+    // --- NUEVO: Leemos el isFollowing que nos manda el backend ---
+    if (res.data.isFollowing !== undefined) {
+      setIsFollowing(res.data.isFollowing);
     }
-  };
+  } catch (err) {
+    setError("Usuario no encontrado");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchProfile();

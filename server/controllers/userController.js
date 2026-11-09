@@ -19,21 +19,28 @@ export const getUserProfile = async (req, res) => {
 // @route   POST /api/users/:id/follow
 export const getUserProfileWithPosts = async (req, res) => {
   try {
+    // 1. Buscamos al usuario dueño del perfil
     const user = await User.findOne({ username: req.params.username }).select("-password");
     if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
+    // 2. Buscamos sus posts
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
       .populate("author", "username avatarUrl displayName");
 
-    // --- NUEVO: Verificamos si el usuario logueado (req.user) sigue a este perfil ---
+    // 3. VERIFICAMOS SI EL USUARIO LOGUEADO YA SIGUE A ESTE PERFIL
+    // req.user._id viene del middleware 'protect'
     let isFollowing = false;
     if (req.user) {
-      const followRecord = await Follow.findOne({ follower: req.user._id, following: user._id });
-      if (followRecord) isFollowing = true;
+      const follow = await Follow.findOne({ 
+        follower: req.user._id, 
+        following: user._id 
+      });
+      if (follow) isFollowing = true;
     }
 
-    res.json({ user, posts, isFollowing }); // <-- Devolvemos isFollowing
+    // 4. Devolvemos todo, incluyendo el estado del follow
+    res.json({ user, posts, isFollowing });
   } catch (error) {
     res.status(500).json({ message: "Error al obtener el perfil", error: error.message });
   }
