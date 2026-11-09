@@ -35,10 +35,14 @@ export const createPost = async (req, res) => {
     // Poblamos el autor para devolverlo igual que en el feed
     const populatedPost = await Post.findById(post._id).populate("author", "username avatarUrl");
     res.status(201).json(populatedPost);
-  } catch (error) {
-    res.status(500).json({ message: "Error al crear el post", error: error.message });
-  }
-};
+    } catch (error) {
+    console.error("Error detallado:", error); // Esto saldrá en los logs de Render
+    res.status(500).json({ 
+      message: "Error al crear el post", 
+      error: error.message, // <-- Esto nos dirá exactamente qué falló
+      stack: error.stack 
+    });
+  }};
 
 // @desc    Obtener todos los posts (Feed)
 // @route   GET /api/posts
