@@ -4,12 +4,9 @@ import { getUserProfile, toggleFollow, getUserProfileWithPosts } from "../contro
 
 const router = express.Router();
 
-// Ver perfil es público
-router.get("/:username/posts", getUserProfileWithPosts); // <-- NUEVA
+// IMPORTANTE: El middleware 'protect' va justo después de la ruta
+router.get("/:username/posts", protect, getUserProfileWithPosts); 
 router.get("/:username", getUserProfile);
-router.get("/:username/posts", protect, getUserProfileWithPosts); //
-
-// Seguir requiere estar logueado
 router.post("/:id/follow", protect, toggleFollow);
 
 export default router;

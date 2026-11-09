@@ -31,7 +31,7 @@ export const getUserProfileWithPosts = async (req, res) => {
     // 3. VERIFICAMOS SI EL USUARIO LOGUEADO YA SIGUE A ESTE PERFIL
     // req.user._id viene del middleware 'protect'
     let isFollowing = false;
-    if (req.user) {
+    if (req.user) { // <-- Si no hay token, req.user es undefined y esto se salta
       const follow = await Follow.findOne({ 
         follower: req.user._id, 
         following: user._id 
