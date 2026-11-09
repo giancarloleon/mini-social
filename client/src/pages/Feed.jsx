@@ -27,14 +27,25 @@ const Feed = () => {
     fetchFeed();
   }, []);
 
+   const [imageFile, setImageFile] = useState(null);
+
   const handleCreatePost = async (e) => {
     e.preventDefault();
-    if (!newPostText.trim()) return;
+    if (!newPostText.trim() && !imageFile) return; // Validar que haya texto o imagen
 
+    // Usamos FormData para enviar texto + archivo
+    const formData = new FormData();
+    formData.append("text", newPostText);
+    if (imageFile) {
+      formData.append("image", imageFile); // "image" es el nombre que espera multer
+    }
     try {
-      const res = await axios.post(`${API_URL}/posts`, { text: newPostText });
+      const res = await axios.post(`${API_URL}/posts`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }, // Importante para archivos
+      });
       setPosts([res.data, ...posts]); 
       setNewPostText(""); 
+      setImageFile(null); // Limpiar
     } catch (error) {
       console.error("Error al crear post", error);
     }
@@ -63,21 +74,28 @@ const Feed = () => {
       <SearchBar />
 
       {/* Formulario de nuevo post */}
-      <form onSubmit={handleCreatePost} className="flex gap-2 mb-8 bg-white p-3 rounded-xl shadow-sm border border-gray-200">
-        <input 
-          type="text" 
-          value={newPostText} 
-          onChange={(e) => setNewPostText(e.target.value)}
-          placeholder="¿Qué está pasando?"
-          className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button 
-          type="submit" 
-          className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Publicar
-        </button>
-      </form>
+      <form onSubmit={handleCreatePost} className="flex flex-col gap-2 mb-8 bg-white p-3 rounded-xl shadow-sm border border-gray-200">
+    <div className="flex gap-2">
+      <input 
+        type="text" 
+        value={newPostText} 
+        onChange={(e) => setNewPostText(e.target.value)}
+        placeholder="¿Qué está pasando?"
+        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button type="submit" className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors">
+        Publicar
+      </button>
+    </div>
+    
+    {/* Input para la imagen */}
+    <input 
+      type="file" 
+      accept="image/*"
+      onChange={(e) => setImageFile(e.target.files[0])}
+      className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+    />
+  </form>
 
       {/* Lista de posts */}
       <div>

@@ -1,24 +1,40 @@
 import User from "../models/User.js";
 import Post from "../models/Post.js";
 import Follow from "../models/Follow.js";
+import cloudinary from "../config/cloudinary.js";
 
 // @desc    Crear un nuevo post
 // @route   POST /api/posts
 export const createPost = async (req, res) => {
   try {
-    const { text, imageUrl } = req.body;
+    const { text } = req.body;
+    let imageUrl = "";
+
+    // Si viene un archivo, lo subimos a Cloudinary
+    if (req.file) {
+      // Convertimos el buffer a base64 para que Cloudinary lo acepte
+      const b64 = Buffer.from(req.file.buffer).toString("base64");
+      const dataURI = `data:${req.file.mimetype};base64,${b64}`;
+      
+      const result = await cloudinary.uploader.upload(dataURI, {
+        folder: "mini-social-posts", // Carpeta opcional en Cloudinary
+      });
+      imageUrl = result.secure_url;
+    }
 
     if (!text && !imageUrl) {
       return res.status(400).json({ message: "El post debe tener texto o imagen" });
     }
 
     const post = await Post.create({
-      author: req.user._id, // Viene del middleware 'protect'
+      author: req.user._id,
       text,
-      imageUrl,
+      imageUrl, // <-- Guardamos la URL de la imagen
     });
 
-    res.status(201).json(post);
+    // Poblamos el autor para devolverlo igual que en el feed
+    const populatedPost = await Post.findById(post._id).populate("author", "username avatarUrl");
+    res.status(201).json(populatedPost);
   } catch (error) {
     res.status(500).json({ message: "Error al crear el post", error: error.message });
   }

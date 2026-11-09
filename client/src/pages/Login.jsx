@@ -28,35 +28,18 @@ const Login = () => {
         {error && <p className="text-red-500 text-center mb-4 text-sm">{error}</p>}
         
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input 
-            type="password" 
-            placeholder="Contraseña" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button 
-            type="submit" 
-            className="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors mt-2"
-          >
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} 
+            required className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} 
+            required className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          <button type="submit" className="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors mt-2">
             Entrar
           </button>
         </form>
 
         <p className="text-center text-gray-600 mt-6 text-sm">
           ¿No tienes cuenta?{" "}
-          <Link to="/register" className="text-blue-500 font-semibold hover:underline">
-            Regístrate aquí
-          </Link>
+          <Link to="/register" className="text-blue-500 font-semibold hover:underline"> Regístrate aquí </Link>
         </p>
       </div>
     </div>

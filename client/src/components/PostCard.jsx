@@ -46,16 +46,17 @@ const PostCard = ({ post, onLike }) => {
 
       {/* Texto del post */}
       <Link to={`/post/${post._id}`} className="block mb-4">
-        <p className="text-gray-800 text-base">{post.text}</p>
+        <p className="text-gray-800 text-base mb-2">{post.text}</p>
+      {/* Si el post tiene imagen, la mostramos */}
+      {post.imageUrl && (
+      <img src={post.imageUrl} alt="Post content" className="w-full rounded-lg mt-2 border border-gray-100"/>
+      )}
       </Link>
 
       {/* Botones de acción */}
       <div className="flex gap-6 border-t border-gray-100 pt-3">
-        <button 
-          onClick={handleLike}
-          disabled={isLiking}
-          className={`flex items-center gap-1 text-sm font-semibold transition-colors ${likes > 0 ? "text-pink-600" : "text-gray-500 hover:text-pink-600"}`}
-        >
+        <button onClick={handleLike} disabled={isLiking}
+         className={`flex items-center gap-1 text-sm font-semibold transition-colors ${likes > 0 ? "text-pink-600" : "text-gray-500 hover:text-pink-600"}`}>
           ❤️ {likes}
         </button>
         
