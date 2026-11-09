@@ -56,13 +56,6 @@ const PostCard = ({ post, onLike }) => {
       {post.imageUrl && (
       <img src={post.imageUrl} alt="Post content" className="w-full rounded-lg mt-2 border border-gray-100"/>
       )}
-      {user.avatarUrl ? (
-        <img src={user.avatarUrl} alt="avatar" className="w-20 h-20 rounded-full object-cover mx-auto mb-4 shadow-md" />
-        ) : (
-          <div className="w-20 h-20 rounded-full bg-blue-500 text-white flex items-center justify-center text-4xl font-bold mx-auto mb-4 shadow-md">
-            {user.username.charAt(0).toUpperCase()}
-          </div>
-      )}
       </Link>
 
       {/* Botones de acción */}
