@@ -1,8 +1,6 @@
 import express from "express";
 import { protect } from "../middlewares/authMiddleware.js";
 import { getUserProfile, toggleFollow, getUserProfileWithPosts } from "../controllers/userController.js";
-import { protect } from "../middlewares/authMiddleware.js";
-
 
 const router = express.Router();
 
