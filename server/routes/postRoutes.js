@@ -6,11 +6,9 @@ import { createPost, getPosts, getPostById, getUserPosts, getFeed } from "../con
 import upload from "../middlewares/upload.js";
 
 const router = express.Router();
-
 // ==========================================
 // 1. RUTAS FIJAS (Las más específicas primero)
 // ==========================================
-
 // Obtener todos los posts (Público)
 router.get("/", getPosts);
 
@@ -19,10 +17,6 @@ router.get("/feed", protect, getFeed);
 
 // Obtener posts de un usuario específico (Público)
 router.get("/user/:username", getUserPosts);
-
-
-
-
 // ==========================================
 // 2. RUTAS DINÁMICAS (Usan :id)
 // ==========================================
@@ -30,9 +24,7 @@ router.get("/user/:username", getUserPosts);
 // Obtener un post por ID (Público)
 router.get("/:id", getPostById);
 
-// Crear un post (Protegido)
-router.post("/", protect, createPost);
-// La ruta ahora usa upload.single("image") para esperar un archivo llamado "image"
+// Crear un post (Protegido) - CON SUBIDA DE IMAGEN
 router.post("/", protect, upload.single("image"), createPost); 
 
 // Interacciones con un post (Protegidas)
