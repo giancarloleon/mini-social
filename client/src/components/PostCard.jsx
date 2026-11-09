@@ -33,23 +33,35 @@ const PostCard = ({ post, onLike }) => {
       
       {/* Cabecera */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg">
-          {post.author?.username?.charAt(0).toUpperCase()}
-        </div>
-        <div>
-          <Link to={`/profile/${post.author?.username}`} className="hover:underline">
-            <strong className="text-gray-900">@{post.author?.username}</strong>
-          </Link>
+      {/* AVATAR EN EL FEED */}
+        {post.author?.avatarUrl ? (
+          <img src={post.author.avatarUrl} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
+        ) : (
+          <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg">
+            {post.author?.username?.charAt(0).toUpperCase()}
+          </div>
+        )} 
+          <div>
+            <Link to={`/profile/${post.author?.username}`} className="hover:underline">
+              <strong className="text-gray-900">@{post.author?.username}</strong>
+            </Link>
           <div className="text-xs text-gray-500">{timeAgo}</div>
         </div>
       </div>
-
+        
       {/* Texto del post */}
       <Link to={`/post/${post._id}`} className="block mb-4">
         <p className="text-gray-800 text-base mb-2">{post.text}</p>
       {/* Si el post tiene imagen, la mostramos */}
       {post.imageUrl && (
       <img src={post.imageUrl} alt="Post content" className="w-full rounded-lg mt-2 border border-gray-100"/>
+      )}
+      {user.avatarUrl ? (
+        <img src={user.avatarUrl} alt="avatar" className="w-20 h-20 rounded-full object-cover mx-auto mb-4 shadow-md" />
+        ) : (
+          <div className="w-20 h-20 rounded-full bg-blue-500 text-white flex items-center justify-center text-4xl font-bold mx-auto mb-4 shadow-md">
+            {user.username.charAt(0).toUpperCase()}
+          </div>
       )}
       </Link>
 

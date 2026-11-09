@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Follow from "../models/Follow.js";
 import Post from "../models/Post.js";
+import cloudinary from "../config/cloudinary.js";
 
 // @desc    Obtener el perfil de un usuario por su username
 // @route   GET /api/users/:username
@@ -98,5 +99,37 @@ export const searchUsers = async (req, res) => {
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: "Error en la búsqueda", error: error.message });
+  }
+};
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    // 1. Actualizar texto (bio, displayName)
+    if (req.body.bio !== undefined) user.bio = req.body.bio;
+    if (req.body.displayName !== undefined) user.displayName = req.body.displayName;
+
+    // 2. Actualizar avatar si se subió una imagen
+    if (req.file) {
+      const b64 = Buffer.from(req.file.buffer).toString("base64");
+      const dataURI = `data:${req.file.mimetype};base64,${b64}`;
+      const result = await cloudinary.uploader.upload(dataURI, {
+        folder: "mini-social-avatars",
+      });
+      user.avatarUrl = result.secure_url;
+    }
+
+    const updatedUser = await user.save();
+    res.json({ 
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      bio: updatedUser.bio,
+      avatarUrl: updatedUser.avatarUrl,
+      displayName: updatedUser.displayName
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar perfil", error: error.message });
   }
 };
