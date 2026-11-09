@@ -1,6 +1,6 @@
 import express from "express";
 import { protect } from "../middlewares/authMiddleware.js";
-import { getUserProfile, toggleFollow, getUserProfileWithPosts, searchUsers } from "../controllers/userController.js";
+import { getUserProfile, toggleFollow, getUserProfileWithPosts, searchUsers, updateUserProfile } from "../controllers/userController.js";
 import upload from "../middlewares/upload.js";
 
 const router = express.Router();
