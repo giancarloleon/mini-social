@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL; 
 
@@ -45,8 +46,10 @@ const PostCard = ({ post, onLike }) => {
           {post.author?.username?.charAt(0).toUpperCase()}
         </div>
         <div>
-          <strong>@{post.author?.username}</strong>
-          <div style={{ fontSize: "12px", color: "#666" }}>{timeAgo}</div>
+          <Link to={`/profile/${post.author?.username}`} style={{ textDecoration: "none", color: "inherit" }}>
+            <strong>@{post.author?.username}</strong>
+          </Link>
+            <div style={{ fontSize: "12px", color: "#666" }}>{timeAgo}</div>
         </div>
       </div>
 

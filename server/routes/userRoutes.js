@@ -1,10 +1,11 @@
 import express from "express";
-import { getUserProfile, toggleFollow } from "../controllers/userController.js";
 import { protect } from "../middlewares/authMiddleware.js";
+import { getUserProfile, toggleFollow, getUserProfileWithPosts } from "../controllers/userController.js";
 
 const router = express.Router();
 
 // Ver perfil es público
+router.get("/:username/posts", getUserProfileWithPosts); // <-- NUEVA
 router.get("/:username", getUserProfile);
 
 // Seguir requiere estar logueado

@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Follow from "../models/Follow.js";
+import Post from "../models/Post.js";
 
 // @desc    Obtener el perfil de un usuario por su username
 // @route   GET /api/users/:username
@@ -54,5 +55,20 @@ export const toggleFollow = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: "Error al procesar el follow", error: error.message });
+  }
+};
+export const getUserProfileWithPosts = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username }).select("-password");
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    // Buscamos los posts del usuario
+    const posts = await Post.find({ author: user._id })
+      .sort({ createdAt: -1 })
+      .populate("author", "username avatarUrl displayName");
+
+    res.json({ user, posts });
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener el perfil", error: error.message });
   }
 };

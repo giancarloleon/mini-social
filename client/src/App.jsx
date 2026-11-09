@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Feed from "./pages/Feed";
 import { useAuth } from "./context/AuthContext";
+import Profile from "./pages/Profile";
 
 // Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
@@ -25,6 +26,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Feed />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/profile/:username" 
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           } 
         />
