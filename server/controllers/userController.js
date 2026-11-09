@@ -83,3 +83,20 @@ export const toggleFollow = async (req, res) => {
     res.status(500).json({ message: "Error al procesar el follow", error: error.message });
   }
 };
+
+export const searchUsers = async (req, res) => {
+  try {
+    const query = req.query.q;
+    if (!query) return res.status(400).json({ message: "Falta el parámetro de búsqueda" });
+
+    // Buscamos usuarios cuyo username contenga el texto (sin importar mayúsculas)
+    // Usamos $regex de MongoDB y le decimos que sea 'i' (case-insensitive)
+    const users = await User.find({ 
+      username: { $regex: query, $options: "i" } 
+    }).select("username avatarUrl displayName bio").limit(10); // Máximo 10 resultados
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Error en la búsqueda", error: error.message });
+  }
+};

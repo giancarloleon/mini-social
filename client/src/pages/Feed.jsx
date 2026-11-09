@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import PostCard from "../components/PostCard";
+import SearchBar from "../components/SearchBar";
 
 const API_URL = import.meta.env.VITE_API_URL; // <-- Variable global del archivo
 
@@ -54,11 +55,10 @@ const Feed = () => {
         <h2>Hola, @{user?.username}</h2>
         <button onClick={logout} style={{ padding: "8px 12px", cursor: "pointer" }}>Cerrar Sesión</button>
       </div>
+       <SearchBar />
 
       <form onSubmit={handleCreatePost} style={{ marginBottom: "30px", display: "flex", gap: "10px" }}>
-        <input 
-          type="text" 
-          value={newPostText} 
+        <input type="text" value={newPostText} 
           onChange={(e) => setNewPostText(e.target.value)}
           placeholder="¿Qué está pasando?"
           style={{ flex: 1, padding: "10px", borderRadius: "20px", border: "1px solid #ccc" }}
