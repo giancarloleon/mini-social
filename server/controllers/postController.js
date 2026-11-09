@@ -121,3 +121,28 @@ export const getFeed = async (req, res) => {
     res.status(500).json({ message: "Error al obtener el feed", error: error.message });
   }
 };
+
+// @desc    Eliminar un post
+// @route   DELETE /api/posts/:id
+export const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post no encontrado" });
+    }
+
+    // Verificar que el usuario logueado sea el autor del post
+    if (post.author.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "No tienes permiso para eliminar este post" });
+    }
+
+    // Si el post tiene imagen, podríamos borrarla de Cloudinary aquí también
+    // (Por simplicidad, solo borraremos el post de la DB por ahora)
+
+    await post.deleteOne();
+    res.json({ message: "Post eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar el post", error: error.message });
+  }
+};

@@ -2,36 +2,26 @@ import express from "express";
 import { protect } from "../middlewares/authMiddleware.js";
 import { toggleLike } from "../controllers/likeController.js";
 import { createComment, getComments } from "../controllers/commentController.js";
-import { createPost, getPosts, getPostById, getUserPosts, getFeed } from "../controllers/postController.js";
+import { createPost, getPosts, getPostById, getUserPosts, getFeed, deletePost } from "../controllers/postController.js"; // <-- Importar deletePost
 import upload from "../middlewares/upload.js";
 
 const router = express.Router();
-// ==========================================
-// 1. RUTAS FIJAS (Las más específicas primero)
-// ==========================================
-// Obtener todos los posts (Público)
+
+// ... (Rutas fijas) ...
 router.get("/", getPosts);
-
-// Obtener el feed personalizado (Protegido)
 router.get("/feed", protect, getFeed);
-
-// Obtener posts de un usuario específico (Público)
 router.get("/user/:username", getUserPosts);
-// ==========================================
-// 2. RUTAS DINÁMICAS (Usan :id)
-// ==========================================
 
-// Obtener un post por ID (Público)
+// ... (Rutas dinámicas) ...
 router.get("/:id", getPostById);
-
-// Crear un post (Protegido) - CON SUBIDA DE IMAGEN
 router.post("/", protect, upload.single("image"), createPost); 
 
-// Interacciones con un post (Protegidas)
+// Interacciones
 router.post("/:id/like", protect, toggleLike);
 router.post("/:id/comments", protect, createComment);
-
-// Leer comentarios de un post (Público)
 router.get("/:id/comments", getComments);
+
+// NUEVA RUTA PARA ELIMINAR
+router.delete("/:id", protect, deletePost);
 
 export default router;
