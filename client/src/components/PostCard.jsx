@@ -49,7 +49,15 @@ const PostCard = ({ post, onLike }) => {
           <Link to={`/profile/${post.author?.username}`} style={{ textDecoration: "none", color: "inherit" }}>
             <strong>@{post.author?.username}</strong>
           </Link>
+          <Link to={`/post/${post._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+          {/* Cabecera (Avatar, nombre, fecha) */}
+          {/* Texto del post */}
+            <p style={{ fontSize: "16px", marginBottom: "15px" }}>{post.text}</p>
+          </Link>
             <div style={{ fontSize: "12px", color: "#666" }}>{timeAgo}</div>
+            <div style={{ display: "flex", gap: "20px", borderTop: "1px solid #eee", paddingTop: "10px" }}>
+            {/* ... tu botón de like ... */}
+            </div>
         </div>
       </div>
 
