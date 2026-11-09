@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext"; // <-- Importar
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const PostCard = ({ post, onLike }) => {
+const PostCard = ({ post, onLike, onDelete }) => { // <-- Recibimos onDelete
+  const { user } = useAuth(); // <-- Usuario logueado
   const [likes, setLikes] = useState(post.likesCount);
   const [isLiking, setIsLiking] = useState(false);
 
@@ -23,39 +25,59 @@ const PostCard = ({ post, onLike }) => {
     }
   };
 
+  // --- NUEVA FUNCIÓN PARA BORRAR ---
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    // Confirmación nativa del navegador
+    if (!window.confirm("¿Estás seguro de que quieres eliminar este post?")) return;
+
+    try {
+      await axios.delete(`${API_URL}/posts/${post._id}`);
+      if (onDelete) onDelete(post._id); // Avisa al padre (Feed) para que lo elimine de la lista
+    } catch (error) {
+      console.error("Error al eliminar post", error);
+      alert("No se pudo eliminar el post");
+    }
+  };
+
   const timeAgo = new Date(post.createdAt).toLocaleDateString("es-ES", {
     hour: "2-digit", minute: "2-digit"
   });
 
   return (
-    // bg-white: fondo blanco. rounded-xl: bordes redondeados. shadow-sm: sombra sutil.
     <div className="bg-white rounded-xl shadow-sm p-4 mb-4 border border-gray-200">
       
       {/* Cabecera */}
-      <div className="flex items-center gap-3 mb-3">
-      {/* AVATAR EN EL FEED */}
-        {post.author?.avatarUrl ? (
-          <img src={post.author.avatarUrl} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
-        ) : (
-          <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg">
-            {post.author?.username?.charAt(0).toUpperCase()}
-          </div>
-        )} 
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex items-center gap-3">
+          {post.author?.avatarUrl ? (
+            <img src={post.author.avatarUrl} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg">
+              {post.author?.username?.charAt(0).toUpperCase()}
+            </div>
+          )} 
           <div>
             <Link to={`/profile/${post.author?.username}`} className="hover:underline">
               <strong className="text-gray-900">@{post.author?.username}</strong>
             </Link>
-          <div className="text-xs text-gray-500">{timeAgo}</div>
+            <div className="text-xs text-gray-500">{timeAgo}</div>
+          </div>
         </div>
+
+        {/* BOTÓN DE BASURA: Solo visible si soy el autor */}
+        {user?._id === post.author?._id && (
+          <button onClick={handleDelete} className="text-gray-400 hover:text-red-500 transition-colors p-1"
+            title="Eliminar post">   🗑️   </button>
+        )}
       </div>
         
-      {/* Texto del post */}
+      {/* Texto y Foto del post */}
       <Link to={`/post/${post._id}`} className="block mb-4">
         <p className="text-gray-800 text-base mb-2">{post.text}</p>
-      {/* Si el post tiene imagen, la mostramos */}
-      {post.imageUrl && (
-      <img src={post.imageUrl} alt="Post content" className="w-full rounded-lg mt-2 border border-gray-100"/>
-      )}
+        {post.imageUrl && (
+          <img src={post.imageUrl} alt="Post content" className="w-full rounded-lg mt-2 border border-gray-100"/>
+        )}
       </Link>
 
       {/* Botones de acción */}

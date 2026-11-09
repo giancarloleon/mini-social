@@ -55,6 +55,11 @@ const Feed = () => {
     setPosts(posts.map(p => p._id === postId ? { ...p, likesCount: newCount } : p));
   };
 
+  const handleDeletePost = (postId) => {
+    // Filtramos la lista de posts para quitar el que acabamos de borrar
+    setPosts(posts.filter((p) => p._id !== postId));
+  };
+
   if (loading) return <div className="text-center mt-10 text-gray-500">Cargando feed...</div>;
 
   return (
@@ -103,7 +108,12 @@ const Feed = () => {
           <p className="text-center text-gray-500">No hay posts aún. ¡Sigue a alguien o publica algo!</p>
         ) : (
           posts.map((post) => (
-            <PostCard key={post._id} post={post} onLike={handleLikeUpdate} />
+            <PostCard 
+              key={post._id} 
+              post={post} 
+              onLike={handleLikeUpdate} 
+              onDelete={handleDeletePost} // <-- PASAR LA FUNCIÓN
+            />
           ))
         )}
       </div>

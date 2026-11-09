@@ -160,7 +160,12 @@ const Profile = () => {
         <p className="text-gray-500 text-center bg-white p-6 rounded-xl border border-gray-200">Este usuario aún no ha publicado nada.</p>
       ) : (
         posts.map((post) => (
-          <PostCard key={post._id} post={post} onLike={() => {}} />
+        <PostCard 
+          key={post._id} 
+          post={post} 
+          onLike={handleLikeUpdate} 
+          onDelete={handleDeletePost} // <-- PASAR LA FUNCIÓN
+        />
         ))
       )}
     </div>
