@@ -9,7 +9,6 @@ const SearchBar = () => {
   const [results, setResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
 
-  // Debounce: espera 500ms después de que el usuario deja de escribir
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -28,45 +27,40 @@ const SearchBar = () => {
       }
     }, 500);
 
-    return () => clearTimeout(timer); // Limpia el timer si el usuario sigue escribiendo
+    return () => clearTimeout(timer);
   }, [query]);
 
   return (
-    <div style={{ position: "relative", marginBottom: "20px" }}>
+    <div className="relative mb-6">
       <input
         type="text"
         placeholder="Buscar usuarios..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        style={{ width: "100%", padding: "10px", borderRadius: "20px", border: "1px solid #ccc" }}
+        className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
       />
       
-      {/* Dropdown de resultados */}
       {query && (
-        <div style={{ 
-          position: "absolute", top: "100%", left: 0, right: 0, 
-          backgroundColor: "white", border: "1px solid #ccc", borderRadius: "10px",
-          marginTop: "5px", zIndex: 10, maxHeight: "300px", overflowY: "auto"
-        }}>
-          {isSearching && <div style={{ padding: "10px" }}>Buscando...</div>}
+        <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl mt-2 shadow-lg z-10 max-h-60 overflow-y-auto">
+          {isSearching && <div className="p-3 text-gray-500 text-sm">Buscando...</div>}
           
           {!isSearching && results.length === 0 && (
-            <div style={{ padding: "10px", color: "#666" }}>No se encontraron usuarios.</div>
+            <div className="p-3 text-gray-500 text-sm">No se encontraron usuarios.</div>
           )}
 
           {results.map((u) => (
             <Link 
               key={u._id} 
               to={`/profile/${u.username}`}
-              onClick={() => setQuery("")} // Limpia al hacer clic
-              style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px", textDecoration: "none", color: "inherit", borderBottom: "1px solid #eee" }}
+              onClick={() => setQuery("")}
+              className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0"
             >
-              <div style={{ width: "30px", height: "30px", borderRadius: "50%", backgroundColor: "#007bff", color: "white", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "12px" }}>
+              <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">
                 {u.username.charAt(0).toUpperCase()}
               </div>
               <div>
-                <strong>@{u.username}</strong>
-                {u.bio && <div style={{ fontSize: "12px", color: "#666" }}>{u.bio}</div>}
+                <strong className="text-gray-900 block">@{u.username}</strong>
+                {u.bio && <div className="text-xs text-gray-500">{u.bio}</div>}
               </div>
             </Link>
           ))}

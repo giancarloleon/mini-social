@@ -12,7 +12,6 @@ const PostCard = ({ post, onLike }) => {
     e.preventDefault();
     if (isLiking) return; 
     setIsLiking(true);
-    
     try {
       const res = await axios.post(`${API_URL}/posts/${post._id}/like`);
       setLikes(res.data.likesCount);
@@ -29,31 +28,38 @@ const PostCard = ({ post, onLike }) => {
   });
 
   return (
-    <div style={{ border: "1px solid #ccc", borderRadius: "10px", padding: "15px", marginBottom: "15px",backgroundColor: "#fff", color: "#333" }}>
+    // bg-white: fondo blanco. rounded-xl: bordes redondeados. shadow-sm: sombra sutil.
+    <div className="bg-white rounded-xl shadow-sm p-4 mb-4 border border-gray-200">
       
-      {/* CABECERA: Fuera del Link del post. El username tiene su propio Link al perfil */}
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-        <div style={{ width: "40px", height: "40px", borderRadius: "50%", backgroundColor: "#007bff", color: "white", display: "flex", justifyContent: "center", alignItems: "center", fontWeight: "bold" }}>
+      {/* Cabecera */}
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg">
           {post.author?.username?.charAt(0).toUpperCase()}
         </div>
         <div>
-          {/* Enlace al perfil del usuario */}
-          <Link to={`/profile/${post.author?.username}`} style={{ textDecoration: "none", color: "inherit" }}><strong>@{post.author?.username}</strong></Link>
-          <div style={{ fontSize: "12px", color: "#666" }}>{timeAgo}</div>
+          <Link to={`/profile/${post.author?.username}`} className="hover:underline">
+            <strong className="text-gray-900">@{post.author?.username}</strong>
+          </Link>
+          <div className="text-xs text-gray-500">{timeAgo}</div>
         </div>
       </div>
 
-      {/* TEXTO DEL POST: Este Link te lleva al detalle del post */}
-      <Link to={`/post/${post._id}`} style={{ textDecoration: "none", color: "inherit", display: "block" }}><p style={{ fontSize: "16px", marginBottom: "15px" }}>{post.text}</p></Link>
+      {/* Texto del post */}
+      <Link to={`/post/${post._id}`} className="block mb-4">
+        <p className="text-gray-800 text-base">{post.text}</p>
+      </Link>
 
-      {/* BOTONES DE ACCIÓN */}
-      <div style={{ display: "flex", gap: "20px", borderTop: "1px solid #eee", paddingTop: "10px" }}>
-        <button onClick={handleLike} disabled={isLiking} style={{ background: "none", border: "none", cursor: "pointer", color: likes > 0 ? "#e0245e" : "#666", fontWeight: "bold", fontSize: "14px", padding: 0}}>
+      {/* Botones de acción */}
+      <div className="flex gap-6 border-t border-gray-100 pt-3">
+        <button 
+          onClick={handleLike}
+          disabled={isLiking}
+          className={`flex items-center gap-1 text-sm font-semibold transition-colors ${likes > 0 ? "text-pink-600" : "text-gray-500 hover:text-pink-600"}`}
+        >
           ❤️ {likes}
         </button>
         
-        {/* Enlace al detalle del post para ver comentarios */}
-        <Link to={`/post/${post._id}`} style={{ textDecoration: "none", color: "#666", fontSize: "14px" }}>
+        <Link to={`/post/${post._id}`} className="flex items-center gap-1 text-sm font-semibold text-gray-500 hover:text-blue-500 transition-colors">
           💬 {post.commentsCount}
         </Link>
       </div>
