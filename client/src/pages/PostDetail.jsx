@@ -29,9 +29,7 @@ const PostDetail = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [id]);
+  useEffect(() => { fetchData(); }, [id]);
 
   // Crear un comentario
   const handleComment = async (e) => {
@@ -47,46 +45,45 @@ const PostDetail = () => {
     }
   };
 
-  if (loading) return <div>Cargando...</div>;
-  if (!post) return <div>Post no encontrado</div>;
+  if (loading) return <div className="text-center mt-10 text-gray-500">Cargando...</div>;
+  if (!post) return <div className="text-center mt-10 text-red-500">Post no encontrado</div>;
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-      <Link to="/feed" style={{ textDecoration: "none", color: "#007bff" }}>← Volver al feed</Link>
+    <div className="max-w-2xl mx-auto p-4">
+      <Link to="/feed" className="text-blue-500 font-semibold hover:underline mb-4 block"> ← Volver al feed</Link>
 
       {/* Post original */}
-      <div style={{ border: "1px solid #ccc", borderRadius: "10px", padding: "20px", marginTop: "20px" }}>
-        <h3>@{post.author?.username}</h3>
-        <p style={{ fontSize: "18px" }}>{post.text}</p>
-        <div style={{ color: "#666", fontSize: "14px" }}>❤️ {post.likesCount} likes</div>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">@{post.author?.username}</h3>
+        <p className="text-xl text-gray-800 mb-4">{post.text}</p>
+        <div className="text-gray-500 text-sm flex items-center gap-1">
+          ❤️ {post.likesCount} likes
+        </div>
       </div>
 
       {/* Formulario de comentario */}
-      <form onSubmit={handleComment} style={{ display: "flex", gap: "10px", margin: "20px 0" }}>
-        <input 
-          type="text" 
-          value={newComment} 
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Escribe un comentario..."
-          style={{ flex: 1, padding: "10px", borderRadius: "20px", border: "1px solid #ccc" }}
-        />
-        <button type="submit" style={{ padding: "10px 20px", borderRadius: "20px", cursor: "pointer", backgroundColor: "#007bff", color: "white", border: "none" }}>
+      <form onSubmit={handleComment} className="flex gap-2 mb-6">
+        <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Escribe un comentario..."
+          className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <button type="submit" className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition-colors">
           Enviar
         </button>
       </form>
 
       {/* Lista de comentarios */}
-      <h4>Comentarios ({comments.length})</h4>
-      {comments.length === 0 ? (
-        <p>No hay comentarios aún. ¡Sé el primero!</p>
-      ) : (
-        comments.map((comment) => (
-          <div key={comment._id} style={{ borderBottom: "1px solid #eee", padding: "10px 0" }}>
-            <strong>@{comment.author?.username}</strong>
-            <p style={{ margin: "5px 0" }}>{comment.text}</p>
-          </div>
-        ))
-      )}
+      <h4 className="font-bold text-gray-800 mb-3">Comentarios ({comments.length})</h4>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        {comments.length === 0 ? (
+          <p className="p-4 text-gray-500 text-center">No hay comentarios aún. ¡Sé el primero!</p>
+        ) : (
+          comments.map((comment) => (
+            <div key={comment._id} className="p-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+              <strong className="text-gray-900 block mb-1">@{comment.author?.username}</strong>
+              <p className="text-gray-700">{comment.text}</p>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

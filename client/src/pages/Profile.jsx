@@ -53,47 +53,58 @@ const Profile = () => {
     }
   };
 
-  if (loading) return <div>Cargando perfil...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="text-center mt-10 text-gray-500">Cargando perfil...</div>;
+  if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
 
   const { user, posts } = profileData;
   const isOwnProfile = currentUser?._id === user._id;
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-      <Link to="/feed" style={{ textDecoration: "none", color: "#007bff" }}>← Volver al feed</Link>
+    <div className="max-w-2xl mx-auto p-4">
+      <Link to="/feed" className="text-blue-500 font-semibold hover:underline mb-4 block">
+        ← Volver al feed
+      </Link>
 
-      <div style={{ border: "1px solid #ccc", borderRadius: "10px", padding: "20px", marginTop: "20px", textAlign: "center" }}>
-        <div style={{ width: "80px", height: "80px", borderRadius: "50%", backgroundColor: "#007bff", color: "white", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "30px", fontWeight: "bold", margin: "0 auto" }}>
+      {/* Tarjeta de perfil */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center mb-8">
+        <div className="w-20 h-20 rounded-full bg-blue-500 text-white flex items-center justify-center text-4xl font-bold mx-auto mb-4 shadow-md">
           {user.username.charAt(0).toUpperCase()}
         </div>
-        <h2>@{user.username}</h2>
-        <p style={{ color: "#666" }}>{user.bio || "Sin biografía"}</p>
+        <h2 className="text-2xl font-bold text-gray-900">@{user.username}</h2>
+        <p className="text-gray-500 mt-2">{user.bio || "Sin biografía"}</p>
         
-        <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
-          <span><strong>{posts.length}</strong> Posts</span>
-          <span><strong>{user.followersCount || 0}</strong> Seguidores</span>
-          <span><strong>{user.followingCount || 0}</strong> Siguiendo</span>
+        <div className="flex justify-center gap-6 mt-6">
+          <div className="text-center">
+            <span className="block font-bold text-lg text-gray-900">{posts.length}</span>
+            <span className="text-sm text-gray-500">Posts</span>
+          </div>
+          <div className="text-center">
+            <span className="block font-bold text-lg text-gray-900">{user.followersCount || 0}</span>
+            <span className="text-sm text-gray-500">Seguidores</span>
+          </div>
+          <div className="text-center">
+            <span className="block font-bold text-lg text-gray-900">{user.followingCount || 0}</span>
+            <span className="text-sm text-gray-500">Siguiendo</span>
+          </div>
         </div>
 
         {!isOwnProfile && (
-          <button 
-            onClick={handleFollow}
-            style={{ 
-              marginTop: "15px", padding: "10px 20px", borderRadius: "20px", cursor: "pointer",
-              backgroundColor: isFollowing ? "#fff" : "#007bff",
-              color: isFollowing ? "#007bff" : "white",
-              border: "1px solid #007bff"
-            }}
+          <button onClick={handleFollow}
+            className={`mt-6 px-8 py-2 rounded-full font-semibold transition-colors border ${
+              isFollowing 
+                ? "bg-white text-blue-500 border-blue-500 hover:bg-blue-50" 
+                : "bg-blue-500 text-white border-transparent hover:bg-blue-600"
+            }`}
           >
             {isFollowing ? "Dejar de seguir" : "Seguir"}
           </button>
         )}
       </div>
 
-      <h3 style={{ marginTop: "30px" }}>Posts</h3>
+      {/* Lista de posts */}
+      <h3 className="text-xl font-bold text-gray-800 mb-4">Posts</h3>
       {posts.length === 0 ? (
-        <p>Este usuario aún no ha publicado nada.</p>
+        <p className="text-gray-500 text-center bg-white p-6 rounded-xl border border-gray-200">Este usuario aún no ha publicado nada.</p>
       ) : (
         posts.map((post) => (
           <PostCard key={post._id} post={post} onLike={() => {}} />
