@@ -6,12 +6,12 @@ const PostCard = ({ post, onLike }) => {
   const [isLiking, setIsLiking] = useState(false);
 
   // Función para dar/quitar like
-  const handleLike = async () => {
-    if (isLiking) return; // Evita doble clic
+    const handleLike = async () => {
+    if (isLiking) return; 
     setIsLiking(true);
     try {
-      // Hacemos la petición a nuestro backend
-      const res = await axios.post(`http://localhost:4000/api/posts/${post._id}/like`);
+      // Cambiamos localhost por la variable de entorno
+      const res = await axios.post(`${API_URL}/posts/${post._id}/like`);
       
       // Actualizamos el contador local con la respuesta del servidor
       setLikes(res.data.likesCount);
