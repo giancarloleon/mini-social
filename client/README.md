@@ -1,16 +1,37 @@
-# React + Vite
+# Mini-Social 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una red social minimalista inspirada en Twitter/Instagram, construida con el stack MERN (MongoDB, Express, React, Node.js) y desplegada en la nube.
 
-Currently, two official plugins are available:
+##  Demo en vivo
+- **Frontend (Vercel):** [https://mini-social-alpha.vercel.app](https://mini-social-alpha.vercel.app)
+- **Backend API (Render):** [https://mini-social-ea74.onrender.com/api/health](https://mini-social-ea74.onrender.com/api/health)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+##  Características
+- **Autenticación:** Registro e inicio de sesión con JWT.
+- **Posts:** Creación de publicaciones con texto e imágenes (Cloudinary).
+- **Interacciones:** Sistema de likes (toggle) y comentarios.
+- **Red Social:** Feed personalizado basado en seguidos, sistema de follow/unfollow.
+- **Perfiles:** Edición de biografía y foto de perfil, búsqueda de usuarios.
+- **CRUD Completo:** Eliminación de posts propios.
+- **Diseño:** Interfaz moderna y responsive con Tailwind CSS.
 
-## React Compiler
+##  Tecnologías
+- **Frontend:** React, Vite, React Router, Tailwind CSS, Axios.
+- **Backend:** Node.js, Express, Mongoose, JWT, Multer, Cloudinary.
+- **Base de datos:** MongoDB Atlas.
+- **Despliegue:** Vercel (Frontend) y Render (Backend).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+##  Cómo correr el proyecto localmente
+1. Clona el repositorio: `git clone https://github.com/giancarloeon/mini-social.git`
+2. Instala dependencias del backend: `cd server && npm install`
+3. Instala dependencias del frontend: `cd client && npm install`
+4. Configura las variables de entorno en `server/.env` (MongoDB, JWT, Cloudinary).
+5. Corre el backend: `npm run dev` (en `server`).
+6. Corre el frontend: `npm run dev` (en `client`).
 
-## Expanding the ESLint configuration
+##  Notas
+- El backend está en el plan gratuito de Render, por lo que puede tardar unos segundos en "despertar" tras un periodo de inactividad.
+- Las imágenes se almacenan en Cloudinary.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+*Desarrollado por [Giancarlo Leon](https://github.com/giancarloeon)*
