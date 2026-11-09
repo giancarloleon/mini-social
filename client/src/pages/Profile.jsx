@@ -74,6 +74,10 @@ const Profile = () => {
       console.error("Error al actualizar perfil", error);
     }
   };
+  const handleDeletePost = (postId) => {
+    // Filtramos la lista de posts para quitar el que acabamos de borrar
+    setPosts(posts.filter((p) => p._id !== postId));
+  };
   // --------------------------------------
 
   if (loading) return <div className="text-center mt-10 text-gray-500">Cargando perfil...</div>;
@@ -81,6 +85,7 @@ const Profile = () => {
 
   const { user, posts } = profileData;
   const isOwnProfile = currentUser?._id === user._id;
+  
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -160,12 +165,12 @@ const Profile = () => {
         <p className="text-gray-500 text-center bg-white p-6 rounded-xl border border-gray-200">Este usuario aún no ha publicado nada.</p>
       ) : (
         posts.map((post) => (
-        <PostCard 
-          key={post._id} 
-          post={post} 
-          onLike={handleLikeUpdate} 
-          onDelete={handleDeletePost} // <-- PASAR LA FUNCIÓN
-        />
+          <PostCard 
+            key={post._id} 
+            post={post} 
+            onLike={handleLikeUpdate} 
+            onDelete={handleDeletePost} // <-- PASAR LA FUNCIÓN
+          />
         ))
       )}
     </div>
