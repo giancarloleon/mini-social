@@ -43,7 +43,7 @@ const Feed = () => {
       const res = await axios.post(`${API_URL}/posts`, formData, {
         headers: { "Content-Type": "multipart/form-data" }, // Importante para archivos
       });
-      setPosts([res.data, ...posts]); 
+      setPosts((prevPosts) => [res.data, ...prevPosts]);
       setNewPostText(""); 
       setImageFile(null); // Limpiar
     } catch (error) {
