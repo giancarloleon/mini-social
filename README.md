@@ -32,6 +32,24 @@ Una red social minimalista inspirada en Twitter/Instagram, construida con el sta
 ##  Notas
 - El backend está en el plan gratuito de Render, por lo que puede tardar unos segundos en "despertar" tras un periodo de inactividad.
 - Las imágenes se almacenan en Cloudinary.
+##  Capturas de pantalla
+  | Feed Principal | 
+| :---: | 
+<img width="3838" height="1786" alt="feed" src="https://github.com/user-attachments/assets/52d8067d-fc4c-4f2c-9961-f0ba6b3db6b1" />
+
+  | Feed Responsive Principal | 
+| :---: | 
+<img width="720" height="1600" alt="feed responsive" src="https://github.com/user-attachments/assets/012075b1-41b3-4060-85e2-5ba26553dc39" />
+
+  | Perfil Principal | 
+| :---: | 
+<img width="3838" height="1791" alt="perfil" src="https://github.com/user-attachments/assets/59881e01-0fe3-45ae-99ee-eccbd17fac4f" />
+
+  | Perfil Responsive Principal | 
+| :---: | 
+<img width="720" height="1600" alt="perfil responsive" src="https://github.com/user-attachments/assets/7263e44d-ec3f-4e57-9055-62124ed9031d" />
+
+
 
 ---
 *Desarrollado por [Giancarlo Leon](https://github.com/giancarloeon)*
